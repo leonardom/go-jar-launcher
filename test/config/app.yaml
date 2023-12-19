@@ -1,0 +1,9 @@
+JavaHome: './jre'
+JVMOptions:
+  - '-Dfoo=bar'
+  - '-Xmx1g'
+JARFile: example.jar
+Args:
+  - 'arg1'
+  - 'arg2'
+  - 'arg3'
