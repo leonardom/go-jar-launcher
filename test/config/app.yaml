@@ -1,3 +1,4 @@
+CheckUpdate: http://localhost:8080
 JavaHome: './jre'
 JVMOptions:
   - '-Dfoo=bar'

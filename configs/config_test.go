@@ -13,6 +13,7 @@ func TestLoadConfig(t *testing.T) {
 	cfg, err := LoadConfig(wd + "/../test/config/app.yaml")
 	assert.Nil(t, err)
 	if assert.NotNil(t, cfg) {
+		assert.Equal(t, "http://localhost:8080", cfg.CheckUpdate)
 		assert.Equal(t, "./jre", cfg.JavaHome)
 		assert.ElementsMatch(t, []string{"-Dfoo=bar", "-Xmx1g"}, cfg.JVMOptions)
 		assert.Equal(t, "example.jar", cfg.JARFile)

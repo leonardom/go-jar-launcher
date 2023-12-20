@@ -3,10 +3,11 @@ package configs
 import "github.com/spf13/viper"
 
 type Config struct {
-	JavaHome   string
-	JVMOptions []string
-	JARFile    string
-	Args       []string
+	CheckUpdate string
+	JavaHome    string
+	JVMOptions  []string
+	JARFile     string
+	Args        []string
 }
 
 func LoadConfig(file string) (*Config, error) {
