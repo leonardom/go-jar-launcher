@@ -3,6 +3,7 @@ package internal
 import (
 	"errors"
 	"fmt"
+	"log"
 	"os"
 	"path"
 	"strings"
@@ -30,34 +31,34 @@ func NewUpdater(appName string, config *configs.Config) updater {
 
 func (u *updater) CheckUpdate() {
 	u.prepareUpdateDir()
-	fmt.Printf("Checking for update on %v\n", u.ServerEndpoint)
+	log.Printf("Checking for update on %v\n", u.ServerEndpoint)
 	localChecksum := u.getLocalChecksum()
 	serverChecksum := u.getServerChecksum()
-	fmt.Printf("Local checksum:  [%v]\n", localChecksum)
-	fmt.Printf("Server checksum: [%v]\n", serverChecksum)
+	log.Printf("Local checksum:  [%v]\n", localChecksum)
+	log.Printf("Server checksum: [%v]\n", serverChecksum)
 	if localChecksum == serverChecksum {
-		fmt.Printf("App is up-to-date!\n")
+		log.Printf("App is up-to-date!\n")
 		return
 	}
-	fmt.Printf("New version avaiable!\n")
+	log.Printf("New version avaiable!\n")
 	err := u.archive()
 	if err != nil {
-		fmt.Printf("ERROR: Not possible to create archive: %v. Update aborted!\n", err)
+		log.Printf("ERROR: Not possible to create archive: %v. Update aborted!\n", err)
 		return
 	}
 	zipfile, err := u.download()
 	if err != nil {
-		fmt.Printf("ERROR: Not possible to download update: %v. Update aborted!\n", err)
+		log.Printf("ERROR: Not possible to download update: %v. Update aborted!\n", err)
 		return
 	}
 	err = u.unpack(zipfile)
 	if err != nil {
-		fmt.Printf("ERROR: Not possible to unpack update: %v. Update aborted!\n", err)
+		log.Printf("ERROR: Not possible to unpack update: %v. Update aborted!\n", err)
 		return
 	}
 	err = u.replaceFiles()
 	if err != nil {
-		fmt.Printf("ERROR: Not possible to apply update: %v!\n", err)
+		log.Printf("ERROR: Not possible to apply update: %v!\n", err)
 		return
 	}
 }

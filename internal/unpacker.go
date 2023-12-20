@@ -3,8 +3,8 @@ package internal
 import (
 	"archive/zip"
 	"errors"
-	"fmt"
 	"io"
+	"log"
 	"os"
 	"path/filepath"
 	"strings"
@@ -23,7 +23,7 @@ func NewUnpacker(zipFile, destinationPath string) *unpacker {
 }
 
 func (u *unpacker) Unpack() error {
-	fmt.Printf("Unpacking file %v...\n", u.ZipFile)
+	log.Printf("Unpacking file %v...\n", u.ZipFile)
 	archive, err := zip.OpenReader(u.ZipFile)
 	if err != nil {
 		return err

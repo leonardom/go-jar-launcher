@@ -2,8 +2,8 @@ package internal
 
 import (
 	"archive/zip"
-	"fmt"
 	"io"
+	"log"
 	"os"
 	"path/filepath"
 	"strings"
@@ -24,7 +24,7 @@ func NewArchiver(source, target string, excludeDirs []string) *archiver {
 }
 
 func (b *archiver) Archive() error {
-	fmt.Printf("Creating backup file %v...\n", b.Target)
+	log.Printf("Creating backup file %v...\n", b.Target)
 	err := zipFiles(b.Target, b.Source, b.ExcludeDirs)
 	if err != nil {
 		return err

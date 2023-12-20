@@ -1,6 +1,7 @@
 package internal
 
 import (
+	"errors"
 	"os"
 	"os/exec"
 	"strings"
@@ -28,7 +29,7 @@ func (l *launcher) Execute() error {
 	cmd := exec.Command(command.Name, command.Args...)
 	cmd.Stdout = os.Stdout
 	if err := cmd.Run(); err != nil {
-		return err
+		return errors.New("error executing [" + cmd.String() + "'] Error: " + err.Error())
 	}
 	return nil
 }

@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"log"
 	"os"
 	"path/filepath"
 	"sort"
@@ -15,12 +16,12 @@ func main() {
 	appName := filepath.Base(os.Args[0])
 	deleteStaleBackups(appName)
 	args := os.Args[1:]
-	fmt.Println(banner.Inline(appName))
+	log.Println(banner.Inline(appName))
 	wd, err := os.Getwd()
 	if err != nil {
 		panic(err)
 	}
-	fmt.Printf("\nWorking Dir: %v\n", wd)
+	log.Printf("Working Dir: %v\n", wd)
 	configFile := fmt.Sprintf("%v.yaml", appName)
 	if len(args) > 0 {
 		configFile = args[0]
@@ -48,12 +49,12 @@ func deleteStaleBackups(appName string) {
 func loadConfigs(configFile string) *configs.Config {
 	_, err := os.Stat(configFile)
 	if os.IsNotExist(err) {
-		fmt.Printf("ERROR: Missing config file \"%v\"!\n", configFile)
+		log.Printf("ERROR: Missing config file \"%v\"!\n", configFile)
 		os.Exit(1)
 	}
 	config, err := configs.LoadConfig(configFile)
 	if err != nil {
-		fmt.Printf("ERROR: %v\n", err)
+		log.Printf("ERROR: %v\n", err)
 		os.Exit(1)
 	}
 	return config
@@ -71,7 +72,7 @@ func launchApp(config *configs.Config) {
 	launcher := internal.NewLauncher(config)
 	err := launcher.Execute()
 	if err != nil {
-		fmt.Printf("ERROR: %v\n", err)
+		log.Printf("ERROR: %v\n", err)
 		os.Exit(1)
 	}
 }

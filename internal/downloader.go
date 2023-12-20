@@ -2,8 +2,8 @@ package internal
 
 import (
 	"errors"
-	"fmt"
 	"io"
+	"log"
 	"net/http"
 	"os"
 	"path"
@@ -26,7 +26,7 @@ func (d *downloader) Download() error {
 	if err != nil {
 		return err
 	}
-	fmt.Printf("Downloading %v to %v...\n", d.URL, d.DestinationPath)
+	log.Printf("Downloading %v to %v...\n", d.URL, d.DestinationPath)
 	resp, err := http.Get(d.URL)
 	if err != nil {
 		return err
