@@ -4,6 +4,7 @@ import (
 	"errors"
 	"os"
 	"os/exec"
+	"runtime"
 	"strings"
 
 	"github.com/leonardom/go-jar-launcher/configs"
@@ -29,7 +30,7 @@ func (l *launcher) Execute() error {
 	cmd := exec.Command(command.Name, command.Args...)
 	cmd.Stdout = os.Stdout
 	if err := cmd.Run(); err != nil {
-		return errors.New("error executing [" + cmd.String() + "'] Error: " + err.Error())
+		return errors.New("error executing [" + cmd.String() + "] Error: " + err.Error())
 	}
 	return nil
 }
@@ -47,8 +48,12 @@ func (l *launcher) getCommand() Command {
 }
 
 func getJava(jre string) string {
-	if len(strings.TrimSpace(jre)) > 0 {
-		return strings.Join([]string{jre, "bin", "java"}, string(os.PathSeparator))
+	var java = "java"
+	if runtime.GOOS == "windows" {
+		java = "javaw.exe"
 	}
-	return "java"
+	if len(strings.TrimSpace(jre)) > 0 {
+		return strings.Join([]string{jre, "bin", java}, string(os.PathSeparator))
+	}
+	return java
 }

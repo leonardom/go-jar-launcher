@@ -77,7 +77,7 @@ func (u *updater) prepareUpdateDir() error {
 func (u *updater) download() (string, error) {
 	updateFilename := fmt.Sprintf("%v.zip", u.AppName)
 	url := fmt.Sprintf("%v/%v", u.ServerEndpoint, updateFilename)
-	downloader := NewDownloader(url, u.UpdateDir)
+	downloader := NewDownloader(url, u.UpdateDir, 120)
 	err := downloader.Download()
 	if err != nil {
 		return "", err
@@ -118,7 +118,7 @@ func (u *updater) getLocalChecksum() string {
 func (u *updater) getServerChecksum() string {
 	checksumFilename := fmt.Sprintf("%v.checksum", u.AppName)
 	url := fmt.Sprintf("%v/%v", u.ServerEndpoint, checksumFilename)
-	downloader := NewDownloader(url, u.UpdateDir)
+	downloader := NewDownloader(url, u.UpdateDir, 30)
 	err := downloader.Download()
 	if err != nil {
 		return ""
