@@ -6,6 +6,7 @@ import (
 	"os"
 	"path/filepath"
 	"sort"
+	"strings"
 
 	"github.com/leonardom/go-jar-launcher/configs"
 	"github.com/leonardom/go-jar-launcher/internal"
@@ -13,7 +14,8 @@ import (
 )
 
 func main() {
-	appName := filepath.Base(os.Args[0])
+	program := filepath.Base(os.Args[0])
+	appName := strings.TrimSuffix(program, filepath.Ext(program))
 	deleteStaleBackups(appName)
 	args := os.Args[1:]
 	log.Println(banner.Inline(appName))
