@@ -1,23 +1,27 @@
 package internal
 
 import (
+	"context"
 	"errors"
 	"io"
 	"log"
 	"net/http"
 	"os"
 	"path"
+	"time"
 )
 
 type downloader struct {
 	URL             string
 	DestinationPath string
+	Timeout         int
 }
 
-func NewDownloader(url, destination string) *downloader {
+func NewDownloader(url, destination string, timeout int) *downloader {
 	return &downloader{
 		URL:             url,
 		DestinationPath: destination,
+		Timeout:         timeout,
 	}
 }
 
@@ -27,7 +31,13 @@ func (d *downloader) Download() error {
 		return err
 	}
 	log.Printf("Downloading %v to %v...\n", d.URL, d.DestinationPath)
-	resp, err := http.Get(d.URL)
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second*time.Duration(d.Timeout))
+	defer cancel()
+	req, err := http.NewRequestWithContext(ctx, http.MethodGet, d.URL, nil)
+	if err != nil {
+		return err
+	}
+	resp, err := http.DefaultClient.Do(req)
 	if err != nil {
 		return err
 	}
